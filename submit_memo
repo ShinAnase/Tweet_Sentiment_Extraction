@@ -1,0 +1,11 @@
+[△：未着手、○ローカル実装済み、■：submit完了、☓：中止、★：保留(難しそう)]
+ver1■".","!"消し
+　https://www.kaggle.com/debanga/what-the-no-ise
+　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/146424
+★private(らしきもの)データをローカルに実装(robeltaの最後でテスト同様privateも評価してみる)
+★sentimentを加工(mean encode等)、sentimentを学習に組み込む。
+　→smoothing
+    https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/147070
+○3より低い単語について、selected_textとtextがほぼ同じ。
+　→ローカルで作ったmodel_binを組み込んだがうまく受け付けてくれない。
+　　スコアが低ければmodel_binをそのままにしてrobeltaの単語数だけ変えてみる。
