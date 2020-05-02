@@ -6,6 +6,7 @@ ver1■".","!"消し
 ★sentimentを加工(mean encode等)、sentimentを学習に組み込む。
 　→smoothing
     https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/147070
-○3より低い単語について、selected_textとtextがほぼ同じ。
+ver2■3より低い単語について、selected_textとtextがほぼ同じ。
 　→ローカルで作ったmodel_binを組み込んだがうまく受け付けてくれない。
 　　スコアが低ければmodel_binをそのままにしてrobeltaの単語数だけ変えてみる。
+ver3★robeltaをローカルに組み込む。→jaccord scoreがbertよりも低いため（過学習が顕著）
