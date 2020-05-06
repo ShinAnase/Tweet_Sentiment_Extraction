@@ -3,10 +3,37 @@ ver1■".","!"消し
 　https://www.kaggle.com/debanga/what-the-no-ise
 　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/146424
 ★private(らしきもの)データをローカルに実装(robeltaの最後でテスト同様privateも評価してみる)
-★sentimentを加工(mean encode等)、sentimentを学習に組み込む。
+　→sentimentが多種類あって、実際の３タイプに変換できないと無理そう。
+△sentimentを加工(mean encode等)、sentimentを学習に組み込む。
 　→smoothing
     https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/147070
+    https://stackoverflow.com/questions/55681502/label-smoothing-in-pytorch
 ver2■3より低い単語について、selected_textとtextがほぼ同じ。
 　→ローカルで作ったmodel_binを組み込んだがうまく受け付けてくれない。
 　　スコアが低ければmodel_binをそのままにしてrobeltaの単語数だけ変えてみる。
-ver3★robeltaをローカルに組み込む。→jaccord scoreがbertよりも低いため（過学習が顕著）
+ver3○robeltaをローカルに組み込む。
+　　　→実装完(_convRobelta_bert-base-uncased-using-pytorch.ipynb)
+   　　　→jaccord scoreがbertよりも低い。（過学習が顕著）
+　　 　　　→ver4で改善しそう。
+ver4○dropoutの追加
+　→robertaにはやる価値ありそう
+ver5○loss_func修正
+　https://www.kaggle.com/laevatein/tweat-the-loss-function-a-bit
+　→位置にペナルティをかける。
+　　→結果悪い
+  　　→CrossEntropyLoss()と組み合わせる？
+ver6○loss_func修正(dist)
+　　　https://www.kaggle.com/jeinsong/distance-loss?scriptVersionId=33216470
+ver7■argmaxの改良(submit->13)
+　　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/147115
+   
+
+
+ 
+ 
+ 【作業キーワード】
+ ・データ解析
+ ・bertの役目
+ 　→idsとsentiment以外を表すmask(token_type_ids)の使い方
+ 　　→bertはsentimentを学習の材料にしているのか？
+ 
