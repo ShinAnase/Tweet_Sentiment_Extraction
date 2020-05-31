@@ -1,4 +1,4 @@
-[△：未着手、○ローカル実装済み、■：submit完了、☓：中止、★：保留(難しそう)]
+[△：未着手、○ローカル実装済み、■：submit完了、☓：中止、★：保留(難しそう)、[P]：対応中]
 ver1■".","!"消し
 　https://www.kaggle.com/debanga/what-the-no-ise
 　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/146424
@@ -26,14 +26,116 @@ ver6○loss_func修正(dist)
 　　　https://www.kaggle.com/jeinsong/distance-loss?scriptVersionId=33216470
 ver7■argmaxの改良(submit->13)
 　　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/147115
+ver8☓sentimentを学習項目(トークン)から消す
+　　　→結果悪い
+ver9○tf-idfの上位の単語が合った場合sentimentにくっつける(sentimentの代わりでもいいかも)
+　　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/138609
+
+ver10△tf-idfの上位の単語を学習関係なく後処理で答えとして加える。
+
+ver11△most common words in selected textをトークン化
+　　　https://www.kaggle.com/shahules/complete-eda-baseline-model-0-708-lb
+ver12△上位のbigramをトークン化
+　　　https://www.kaggle.com/shahules/complete-eda-baseline-model-0-708-lb
+
+ver13△disable_layersの投入
+　　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/142011
+
+ver14★モデル層の投入
+　　　https://www.kaggle.com/al0kharba/tensorflow-roberta-0-712/data
    
+ver15△セパレータの改修
+　　https://qiita.com/YuiKasuga/items/343309257da1798c1b63
+    4,5番
 
+ver16○CNN層の追加
+　　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/151878
+　　　
+ 
+【BERTweet】
+ver17★正規化
+　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/152861
+    https://github.com/VinAIResearch/BERTweet#-a-script-to-pre-process-raw-input-tweets
+　　→不可能。tweetとslected_textでtokenの内容が変わってしまう。
 
- 
- 
+ver18△lossを距離化する
+
+ver19△累積分布
+　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/153747
+
+ver20△モデルいじり
+      →プーリング追加
+
  【作業キーワード】
  ・データ解析
  ・bertの役目
  　→idsとsentiment以外を表すmask(token_type_ids)の使い方
  　　→bertはsentimentを学習の材料にしているのか？
+   　　→している
+     　　→外したほうがいい？
+       　　https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/142011
+         　→どうにかしてsentimentを学習に組み込みたい
  
+ 
+ 
+ <https://www.kaggle.com/c/tweet-sentiment-extraction/discussion/142011>
+皆さん、こんにちは。
+
+まず最初に、このコンテストで素晴らしいスターターカーネルを共有してくれた皆さん、また、過去の多くのトランスフォーマーを中心としたコンテストで参考になるディスカッションポストやgithubのsrcなどを共有してくれた皆さんに感謝しています。
+
+私が以下のことを試したとき、私は+0.002の改善を得ることができました(私はそれが非常に小さいことを知っています。しかし、このアイデアは私よりもずっと賢い誰かにとって重要なものかもしれません。)
+
+だから、さらに逸脱して、時間を殺すことなく。
+
+このカーネルに@abhishekさんの分類ヘッドを追加しました（分類損失が発生していることを示唆しています）。
+
+情報が漏れないようにトークンの感情を削除しました。[編集→削除しない方がいいかもしれません。]
+
+BERT の出力レイヤをすべて 1 つの表現に結合して使用します。訓練可能なベクトルを作成し、その上にsoftmaxを適用することができます。
+
+○ツイートの中に肯定的な言葉や否定的な言葉が頻繁に使われているかどうかを示すトークンを追加した。(注意：データの作成方法を変更してください)
+
+累進的な凍結解除、層の識別学習率なども効果的なトレーニング戦略として考えられる!
+
+TO-DO] 他のカグラーが共有しているカッコいい損失関数を試してみよう。
+
+さて、私が持っているが、まだ試していない考えを紹介します。
+まずツイッターでプレトレーニングをしてから、それらのウェイトを使う。
+
+ツイートの長さはデータセットの作成方法にも影響すると思うので、この情報をどのように活用するかを考えているところです。
+
+ポジティブ、ネガティブ、ニュートラルのツイートに異なるヘッドを使用する（開始、終了のトークンの位置を予測するため）？
+
+もっと意味のあるトークンを追加する。
+
+より良い重み付け損失。
+
+また、Sentiment140のデータセットを使って、より多くのデータを生成してみた（事前にLMを使って微調整しておくことで、よりブーストを上げることができると思います）。
+
+質問と回答はセップヘッドを使用してください。
+
+あなたの考えはここに...
+…….
+
+もっとアイデアが出てきたら更新します!
+
+注：上記のアイデアは完全に私のものではなく、私がここで時間をかけて得た知識から来ています。ありがとうございます :)
+
+そして、もし彼らがあなたのためにうまくいかなかったり、すでに似たようなものを使っていたら、あなたの秘密のソースを明らかにしてごめんなさい😅。
+
+ハッピーカグリング!
+
+リガードさん。
+アディティヤ
+
+編集 - 1
+
+かっこいい再検索ペーパー イライラするほど簡単な自然な疑問回答
+編集 - 2
+
+いくつかのより多くのアイデアを追加しました。
+編集 - 3
+
+他のカグラーが共有しているクールな損失ファンクも試してみてください。
+
+www.DeepL.com/Translator（無料版）で翻訳しました。
